@@ -1,0 +1,57 @@
+CREATE TABLE User (
+    UserID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(255),
+    Email VARCHAR(255),
+    Address VARCHAR(255),
+    ContactInformation VARCHAR(255),
+    PaymentDetails VARCHAR(255)
+);
+
+CREATE TABLE Car (
+    CarID INT PRIMARY KEY AUTO_INCREMENT,
+    Status VARCHAR(50)
+);
+
+CREATE TABLE Reservation (
+    ReservationNumber INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    CarID INT,
+    DateAndTime DATETIME,
+    TotalAmount DECIMAL(10, 2),
+    IdentityVerificationStatus VARCHAR(50),
+    PaymentDetails VARCHAR(255),
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (CarID) REFERENCES Car(CarID)
+);
+
+CREATE TABLE DeliveryCollection (
+    DeliveryCollectionID INT PRIMARY KEY AUTO_INCREMENT,
+    ReservationNumber INT,
+    DriverID INT,
+    DeliveryDetails VARCHAR(255),
+    CarStatus VARCHAR(50),
+    FOREIGN KEY (ReservationNumber) REFERENCES Reservation(ReservationNumber)
+);
+
+CREATE TABLE Administrator (
+    AdminID INT PRIMARY KEY AUTO_INCREMENT,
+    Username VARCHAR(255),
+    Password VARCHAR(255)
+);
+
+CREATE TABLE Cancellation (
+    CancellationID INT PRIMARY KEY AUTO_INCREMENT,
+    ReservationNumber INT,
+    CancellationConfirmation VARCHAR(50),
+    RefundInformation VARCHAR(255),
+    FOREIGN KEY (ReservationNumber) REFERENCES Reservation(ReservationNumber)
+);
+
+CREATE TABLE BreakdownTowing (
+    BreakdownFormID INT PRIMARY KEY AUTO_INCREMENT,
+    UserID INT,
+    DriverID INT,
+    RelevantUpdates VARCHAR(255),
+    FOREIGN KEY (UserID) REFERENCES User(UserID),
+    FOREIGN KEY (DriverID) REFERENCES DeliveryCollection(DriverID)
+);
